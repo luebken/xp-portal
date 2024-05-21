@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './styles.css'; // Import the CSS file
 
 function App() {
     const [name, setName] = useState('');
@@ -33,8 +34,8 @@ function App() {
 
     return (
         <div>
-            <h1>Create Kubernetes Pod</h1>
-            <form onSubmit={handleSubmit}>
+            <h1 className="header">Create Kubernetes Pod</h1>
+            <form onSubmit={handleSubmit} className="header">
                 <div>
                     <label>Pod Name:</label>
                     <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
@@ -45,31 +46,20 @@ function App() {
                 </div>
                 <button type="submit">Create Pod</button>
             </form>
-            {message && <p>{message}</p>}
+            {message && <p className="header">{message}</p>}
 
-            <h2>List of Pods</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>NAME</th>
-                        <th>READY</th>
-                        <th>STATUS</th>
-                        <th>RESTARTS</th>
-                        <th>AGE</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {pods.map((pod) => (
-                        <tr key={pod.name}>
-                            <td>{pod.name}</td>
-                            <td>{pod.ready}</td>
-                            <td>{pod.status}</td>
-                            <td>{pod.restarts}</td>
-                            <td>{new Date(pod.age).toLocaleString()}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <h2 className="header">List of Pods</h2>
+            <div className="container">
+                {pods.map((pod) => (
+                    <div key={pod.name} className="card">
+                        <h3>{pod.name}</h3>
+                        <p><strong>Ready:</strong> {pod.ready}</p>
+                        <p><strong>Status:</strong> {pod.status}</p>
+                        <p><strong>Restarts:</strong> {pod.restarts}</p>
+                        <p><strong>Age:</strong> {new Date(pod.age).toLocaleString()}</p>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }
