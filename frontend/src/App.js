@@ -1,3 +1,5 @@
+// App.js
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
@@ -28,10 +30,12 @@ function App() {
                 <Route path="/create-pod" element={<CreatePod />} />
                 <Route path="/" element={
                     <div>
-                       <Link to="/create-pod">
-                            <button>Create Pod</button>
-                        </Link>
-                         <h1 className="header">List of Pods</h1>
+                        <div className="header-container">
+                            <h1 className="header">List of Pods</h1>
+                            <Link to="/create-pod">
+                                <button className="button">Create Pod</button>
+                            </Link>
+                        </div>
                         <div className="container">
                             {pods.map((pod) => (
                                 <Link to={`/pod-details/${pod.namespace}/${pod.name}`} key={pod.name} style={{ textDecoration: 'none', color: 'inherit' }}>
