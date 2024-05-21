@@ -43,6 +43,7 @@ def list_pods():
     for pod in pods.items:
         pod_info = {
             'name': pod.metadata.name,
+            'namespace': pod.metadata.namespace,
             'ready': f"{sum(1 for c in pod.status.container_statuses if c.ready)}/{len(pod.status.container_statuses)}",
             'status': pod.status.phase,
             'restarts': sum(c.restart_count for c in pod.status.container_statuses),
@@ -51,6 +52,16 @@ def list_pods():
         pod_list.append(pod_info)
     
     return jsonify(pod_list)
+
+@app.route('/pod-details/<namespace>/<name>', methods=['GET'])
+def pod_details(namespace, name):
+    v1 = client.CoreV1Api()
+    try:
+        pod = v1.read_namespaced_pod(name=name, namespace=namespace)
+        details = v1.read_namespaced_pod_status(name=name, namespace=namespace).to_dict()
+        return jsonify(details)
+    except client.rest.ApiException as e:
+        return jsonify({'error': e.reason}), e.status
 
 if __name__ == '__main__':
     app.run(port=3000)
