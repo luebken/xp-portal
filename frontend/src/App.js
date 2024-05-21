@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import PodDetails from './PodDetails';
+import './styles.css';  // Import the CSS file
 
 function App() {
     const [name, setName] = useState('');
@@ -33,32 +34,13 @@ function App() {
         }
     };
 
-    const cardStyle = {
-        border: '1px solid #ddd',
-        borderRadius: '8px',
-        padding: '16px',
-        margin: '16px',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-        width: '200px',
-    };
-
-    const containerStyle = {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-    };
-
-    const headerStyle = {
-        textAlign: 'center',
-    };
-
     return (
         <Router>
             <Routes>
                 <Route path="/pod-details/:namespace/:name" element={<PodDetails />} />
                 <Route path="/" element={
                     <div>
-                        <h1 style={headerStyle}>Create Kubernetes Pod</h1>
+                        <h1 className="header">Create Kubernetes Pod</h1>
                         <form onSubmit={handleSubmit} style={{ textAlign: 'center' }}>
                             <div>
                                 <label>Pod Name:</label>
@@ -70,13 +52,13 @@ function App() {
                             </div>
                             <button type="submit">Create Pod</button>
                         </form>
-                        {message && <p style={headerStyle}>{message}</p>}
+                        {message && <p className="header">{message}</p>}
 
-                        <h2 style={headerStyle}>List of Pods</h2>
-                        <div style={containerStyle}>
+                        <h2 className="header">List of Pods</h2>
+                        <div className="container">
                             {pods.map((pod) => (
                                 <Link to={`/pod-details/${pod.namespace}/${pod.name}`} key={pod.name} style={{ textDecoration: 'none', color: 'inherit' }}>
-                                    <div style={cardStyle}>
+                                    <div className="card">
                                         <h3>{pod.name}</h3>
                                         <p><strong>Namespace:</strong> {pod.namespace}</p>
                                         <p><strong>Ready:</strong> {pod.ready}</p>
