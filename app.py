@@ -34,5 +34,12 @@ def create_pod():
     except client.exceptions.ApiException as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/list-pods', methods=['GET'])
+def list_pods():
+    api_instance = client.CoreV1Api()
+    pods = api_instance.list_namespaced_pod(namespace='default')
+    pod_list = [{"name": pod.metadata.name, "status": pod.status.phase} for pod in pods.items]
+    return jsonify(pod_list)
+
 if __name__ == '__main__':
     app.run(port=3000)
