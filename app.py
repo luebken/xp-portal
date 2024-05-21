@@ -36,9 +36,20 @@ def create_pod():
 
 @app.route('/list-pods', methods=['GET'])
 def list_pods():
-    api_instance = client.CoreV1Api()
-    pods = api_instance.list_namespaced_pod(namespace='default')
-    pod_list = [{"name": pod.metadata.name, "status": pod.status.phase} for pod in pods.items]
+    v1 = client.CoreV1Api()
+    pods = v1.list_pod_for_all_namespaces(watch=False)
+    pod_list = []
+
+    for pod in pods.items:
+        pod_info = {
+            'name': pod.metadata.name,
+            'ready': f"{sum(1 for c in pod.status.container_statuses if c.ready)}/{len(pod.status.container_statuses)}",
+            'status': pod.status.phase,
+            'restarts': sum(c.restart_count for c in pod.status.container_statuses),
+            'age': pod.metadata.creation_timestamp
+        }
+        pod_list.append(pod_info)
+    
     return jsonify(pod_list)
 
 if __name__ == '__main__':

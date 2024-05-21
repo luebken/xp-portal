@@ -48,13 +48,28 @@ function App() {
             {message && <p>{message}</p>}
 
             <h2>List of Pods</h2>
-            <ul>
-                {pods.map((pod) => (
-                    <li key={pod.name}>
-                        {pod.name} - {pod.status}
-                    </li>
-                ))}
-            </ul>
+            <table>
+                <thead>
+                    <tr>
+                        <th>NAME</th>
+                        <th>READY</th>
+                        <th>STATUS</th>
+                        <th>RESTARTS</th>
+                        <th>AGE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {pods.map((pod) => (
+                        <tr key={pod.name}>
+                            <td>{pod.name}</td>
+                            <td>{pod.ready}</td>
+                            <td>{pod.status}</td>
+                            <td>{pod.restarts}</td>
+                            <td>{new Date(pod.age).toLocaleString()}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
 }
