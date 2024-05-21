@@ -3,7 +3,7 @@ import axios from 'axios';
 
 function App() {
     const [name, setName] = useState('');
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState('nginx');
     const [message, setMessage] = useState('');
 
     const handleSubmit = async (e) => {
